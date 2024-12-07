@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Đặt Chỗ</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .pending { color: orange; font-weight: bold; }
+        .confirmed { color: green; font-weight: bold; }
+        .cancelled { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Danh Sách Đặt Chỗ</h1>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Tên khách hàng</th>
+                    <th>Ngày</th>
+                    <th>Giờ</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% bookings.forEach(booking => { %>
+                    <tr>
+                        <td><%= booking._id %></td>
+                        <td><%= booking.customerName %></td>
+                        <td><%= booking.date.toDateString() %></td>
+                        <td><%= booking.time %></td>
+                        <td class="<%= booking.status.toLowerCase() %>"><%= booking.status %></td>
+                        <td>
+                            <div class="d-flex justify-content-evenly">
+                                <form action="/update/<%= booking._id %>" method="POST">
+                                    <input type="text" name="customerName" value="<%= booking.customerName %>" required>
+                                    <input type="date" name="date" value="<%= booking.date.toISOString().split('T')[0] %>" required>
+                                    <input type="time" name="time" value="<%= booking.time %>" required>
+                                    <button type="submit" class="btn btn-warning">Sửa</button>
+                                </form>
+                                
+                                <form action="/cancel/<%= booking._id %>" method="POST">
+                                    <button class="btn btn-danger btn-sm">Hủy</button>
+                                </form>
+                                <form action="/delete/<%= booking._id %>" method="POST">
+                                    <button class="btn btn-secondary btn-sm">Xóa</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <form action="/create" method="POST">
+            <input type="text" name="customerName" placeholder="Tên khách hàng" required>
+            <input type="date" name="date" required>
+            <input type="time" name="time" required>
+            <button type="submit" class="btn btn-success">Thêm Đặt Chỗ</button>
+        </form>
+        
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

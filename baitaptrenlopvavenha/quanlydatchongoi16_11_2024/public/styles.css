@@ -1,0 +1,3 @@
+.pending { background-color: yellow; }
+.confirmed { background-color: green; color: white; }
+.cancelled { background-color: red; color: white; }
